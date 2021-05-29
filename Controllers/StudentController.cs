@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using StudentAPI.Model;
 using StudentAPI.Repository;
+using System.Xml.Serialization;
 
 namespace StudentAPI.Controllers
 {
@@ -10,7 +12,6 @@ namespace StudentAPI.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        // GET: api/Student
         [HttpGet]
         public IEnumerable<Student> Get([FromQuery] int pageIndex, [FromQuery] int pageSize)
         {
@@ -18,29 +19,71 @@ namespace StudentAPI.Controllers
             return students;
         }
 
-        // GET: api/Student/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Student
+        
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("PostStudent")]
+        public void PostStudent()
         {
+            var form = HttpContext.Request.Form;
+            Student student = new Student
+            {
+                Name = form["name"],
+                LastName = form["lastName"],
+                Age = Convert.ToByte(form["age"]),
+                BiographyFileName = form.Files[0].FileName,
+                RegisterUser = form["registerUser"]
+            };
         }
 
-        // PUT: api/Student/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost]
+        [Route("PostMultipleStudents")]
+        public IActionResult PostMultipleStudents()
         {
+            IEnumerable<Student> students = null;
+
+            try
+            {
+                students = getDeserializeXmlStudents();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error: Can not read the xml file");
+            }
+            
+
+            return Ok(students); 
+
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        private IEnumerable<Student> getDeserializeXmlStudents()
         {
+            var form = HttpContext.Request.Form;
+            
+            var studentsFile = form.Files.GetFile("StudentXmlFile");
+
+            string studentsData = string.Empty;
+
+            using (StreamReader reader = new StreamReader(studentsFile.OpenReadStream()))
+            {
+                studentsData = reader.ReadToEnd();
+            }
+
+            XmlRootAttribute xRoot = new XmlRootAttribute
+            {
+                ElementName = "students",
+                IsNullable = true
+            };
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Student>), xRoot);
+
+            List<Student> students = new List<Student>();
+
+            using (TextReader reader = new StringReader(studentsData))
+            {
+                students = (List<Student>)serializer.Deserialize(reader);
+            }
+
+            return students;
         }
     }
 }

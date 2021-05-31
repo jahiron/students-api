@@ -51,13 +51,9 @@ namespace StudentAPI.Controllers
         [Route("DownloadBioStudent")]
         public async Task<ActionResult> DownloadBioStudent([FromQuery] string bioUrl)
         {
-            bioUrl = "/Users/jahiron/Downloads/application-letters.pdf";
             var mimeType = getMimeType(bioUrl);
             
             var bytes = await System.IO.File.ReadAllBytesAsync(bioUrl);
-
-          //  var fileStream = new FileStream(bioUrl, FileMode.Open, FileAccess.Read);
-            
 
             return File(bytes, mimeType, Path.GetFileName(bioUrl));
         }

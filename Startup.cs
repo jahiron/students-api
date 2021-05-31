@@ -25,6 +25,7 @@ namespace StudentAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers().AddXmlDataContractSerializerFormatters();
         }
 

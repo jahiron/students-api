@@ -1,9 +1,13 @@
 ﻿<Properties StartupConfiguration="{7CC2B9C7-3016-4A2A-9591-6A24BDD791FF}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="Repository/StudentRepository.cs">
     <Files>
-      <File FileName="Controllers/StudentController.cs" Line="1" Column="1" />
-      <File FileName="Model/Student.cs" Line="1" Column="1" />
-      <File FileName="Repository/StudentRepository.cs" Line="1" Column="1" />
+      <File FileName="Controllers/StudentController.cs" Line="45" Column="1" />
+      <File FileName="Repository/StudentRepository.cs" Line="118" Column="34" />
+      <File FileName="Model/Student.cs" />
+      <File FileName="Startup.cs" />
+      <File FileName="automapper.cs" />
+      <File FileName="Model/StudentDTO.cs" />
+      <File FileName="Repository/Impersonation.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,6 +15,7 @@
           <Node name="StudentAPI" expanded="True">
             <Node name="StudentAPI" expanded="True">
               <Node name="Controllers" expanded="True" />
+              <Node name="Model" expanded="True" />
               <Node name="Repository" expanded="True">
                 <Node name="StudentRepository.cs" selected="True" />
               </Node>
@@ -24,7 +29,11 @@
   <MonoDevelop.Ide.ItemProperties.StudentAPI PreferredExecutionTarget="/Applications/Safari.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/jahiron/work/students-api/Repository/StudentRepository.cs" relfile="Repository/StudentRepository.cs" line="73" column="1" />
+      <Breakpoint file="/Users/jahiron/work/students-api/Controllers/StudentController.cs" relfile="Controllers/StudentController.cs" line="45" column="1" />
+      <Breakpoint file="/Users/jahiron/work/students-api/Controllers/StudentController.cs" relfile="Controllers/StudentController.cs" line="36" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

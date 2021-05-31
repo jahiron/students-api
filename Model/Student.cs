@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Microsoft.AspNetCore.Http;
 
 namespace StudentAPI.Model
 {
@@ -19,7 +20,13 @@ namespace StudentAPI.Model
 
         [XmlElement(ElementName = "age")]
         public byte Age { get; set; }
-        public string BiographyFileName { get; set; }
-        public string RegisterUser { get; set; }
+
+        public string BioFileUrl { get; set; }
+
+        [XmlIgnore]
+        public IFormFile BioFile { get; set; }
+
+        public string RegisterUser { get; set; } = "Temp User";
+
     }
 }

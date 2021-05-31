@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Navbar Styles*/
+.navbar-brand-title{
+    margin-left: 15px;
+}
+
+.navbar-brand-img{
+  margin-left: 10px;
+}
+.navbar-brand,
+.navbar-tabs {
+  align-items: center!important;
+}
+
+/* Student Styles */
+.student-list{
+  margin: auto;
+  width: 80%;
+}
+
+.student-button-new{
+    margin-top: 10px;
+    margin-bottom: 10px; 
+}
+

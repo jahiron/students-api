@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using StudentAPI.Model;
 using StudentAPI.Repository;
 using System.Xml.Serialization;
+using AutoMapper;
+using System.Threading.Tasks;
 
 namespace StudentAPI.Controllers
 {
@@ -12,6 +14,13 @@ namespace StudentAPI.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        private readonly IMapper _mapper;
+
+        public StudentController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         [HttpGet]
         public IEnumerable<Student> Get([FromQuery] int pageIndex, [FromQuery] int pageSize)
         {
@@ -22,7 +31,7 @@ namespace StudentAPI.Controllers
         
         [HttpPost]
         [Route("PostStudent")]
-        public void PostStudent()
+        public ActionResult<Student> PostStudent()
         {
             var form = HttpContext.Request.Form;
             Student student = new Student
@@ -30,32 +39,86 @@ namespace StudentAPI.Controllers
                 Name = form["name"],
                 LastName = form["lastName"],
                 Age = Convert.ToByte(form["age"]),
-                BiographyFileName = form.Files[0].FileName,
+                BioFile = form.Files.GetFile("File"),
                 RegisterUser = form["registerUser"]
             };
+
+            var studentResult = new StudentRepository().SaveStudent(student);
+
+            return Ok(studentResult);
+        }
+
+        [Route("DownloadBioStudent")]
+        public async Task<ActionResult> DownloadBioStudent([FromQuery] string bioUrl)
+        {
+            bioUrl = "/Users/jahiron/Downloads/application-letters.pdf";
+            var mimeType = getMimeType(bioUrl);
+            
+            var bytes = await System.IO.File.ReadAllBytesAsync(bioUrl);
+
+          //  var fileStream = new FileStream(bioUrl, FileMode.Open, FileAccess.Read);
+            
+
+            return File(bytes, mimeType, Path.GetFileName(bioUrl));
+        }
+
+        private string getMimeType(string bioUrl)
+        {
+            var extension = Path.GetExtension(bioUrl);
+
+            return extension == ".pdf" ? "application/pdf" :
+                   extension == ".txt" ? "text/plain" :
+                   extension == ".doc" ? "application/msword" :
+                   extension == ".docx" ? "application/msword" : "Not Soported";
+                   
         }
 
         [HttpPost]
         [Route("PostMultipleStudents")]
-        public IActionResult PostMultipleStudents()
+        public ActionResult<List<Student>> PostMultipleStudents()
         {
-            IEnumerable<Student> students = null;
 
             try
             {
-                students = getDeserializeXmlStudents();
-            }
-            catch (Exception)
-            {
-                return BadRequest("Error: Can not read the xml file");
-            }
-            
+                List<Student> students = null;
 
-            return Ok(students); 
+                try
+                {
+
+                    students = getDeserializeXmlStudents();
+
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Couldn't read the xml file");
+                }
+
+                var studenntsDTO = _mapper.Map<List<StudentDTO>>(students);
+
+                var form = HttpContext.Request.Form;
+
+                var studentsFile = form.Files.GetFile("StudentXmlFile");
+
+                string studentsData = string.Empty;
+
+                using (StreamReader reader = new StreamReader(studentsFile.OpenReadStream()))
+                {
+                    studentsData = reader.ReadToEnd();
+                }
+
+                var insertedStudents = new StudentRepository().SaveMultipleStudents(studenntsDTO);
+
+                return Ok(insertedStudents);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Couldn't insert the students");
+            }
 
         }
 
-        private IEnumerable<Student> getDeserializeXmlStudents()
+        private List<Student> getDeserializeXmlStudents()
         {
             var form = HttpContext.Request.Form;
             

@@ -194,3 +194,6 @@ C:/Users/j.rodriguez/source/repos/StudentAPI/StudentAPI/obj/Debug/netcoreapp3.1/
 /Users/jahiron/work/students-api/obj/Debug/netcoreapp3.1/StudentAPI.dll
 /Users/jahiron/work/students-api/obj/Debug/netcoreapp3.1/StudentAPI.pdb
 /Users/jahiron/work/students-api/obj/Debug/netcoreapp3.1/StudentAPI.genruntimeconfig.cache
+/Users/jahiron/work/students-api/obj/Debug/netcoreapp3.1/StudentAPI.csprojAssemblyReference.cache
+/Users/jahiron/work/students-api/bin/Debug/netcoreapp3.1/AutoMapper.dll
+/Users/jahiron/work/students-api/bin/Debug/netcoreapp3.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

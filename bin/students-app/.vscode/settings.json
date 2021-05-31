@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/9019ce0d-76c4-4637-b47a-b7291f6976ff/resourceGroups/student/providers/Microsoft.Web/sites/studentadmin",
+    "appService.deploySubpath": "dist/student-app"
+}

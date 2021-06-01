@@ -28,5 +28,6 @@ namespace StudentAPI.Model
 
         public string RegisterUser { get; set; } = "Temp User";
 
+        public int RegisterCount { get; set; }
     }
 }

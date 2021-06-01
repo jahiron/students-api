@@ -80,34 +80,20 @@ namespace StudentAPI.Controllers
 
                 try
                 {
-
                     students = getDeserializeXmlStudents();
-
-
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return BadRequest("Couldn't read the xml file");
                 }
 
                 var studenntsDTO = _mapper.Map<List<StudentDTO>>(students);
 
-                var form = HttpContext.Request.Form;
-
-                var studentsFile = form.Files.GetFile("StudentXmlFile");
-
-                string studentsData = string.Empty;
-
-                using (StreamReader reader = new StreamReader(studentsFile.OpenReadStream()))
-                {
-                    studentsData = reader.ReadToEnd();
-                }
-
                 var insertedStudents = new StudentRepository().SaveMultipleStudents(studenntsDTO);
 
                 return Ok(insertedStudents);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest("Couldn't insert the students");
             }

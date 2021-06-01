@@ -43,7 +43,8 @@ namespace StudentAPI.Repository
                                              Name = d.Field<string>("name"),
                                              LastName = d.Field<string>("lastName"),
                                              Age = d.Field<byte>("age"),
-                                             BioFileUrl = d.Field<string>("bioFileUrl")
+                                             BioFileUrl = d.Field<string>("bioFileUrl"),
+                                             RegisterCount = d.Field<int>("registerCount")
                                          }).ToList();
 
                     }
@@ -69,6 +70,12 @@ namespace StudentAPI.Repository
                     {
                         var directoryPath = Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
                         var filePath = Path.Combine(directoryPath, Guid.NewGuid().ToString()) + Path.GetExtension(student.BioFile.FileName);
+
+                        //Save file
+                        using (FileStream stream = File.Create(filePath))
+                        {
+                            student.BioFile.CopyTo(stream);
+                        }
 
                         //Save student 
                         using (SqlCommand sqlCmd = sqlConn.CreateCommand())
@@ -99,13 +106,6 @@ namespace StudentAPI.Repository
 
                             }
                         }
-
-                        //Save file
-                        using (FileStream stream = File.Create(filePath))
-                        {
-                            student.BioFile.CopyTo(stream);
-                        }
-                        
 
                         transaction.Commit();
                     }
@@ -164,13 +164,6 @@ namespace StudentAPI.Repository
 
             return studentsResult;
         }
-
-        //public IFormFile GetBioStudentFile(string bioFileUrl)
-        //{
-        //    using(FileStream fl = new FileStream(bioFileUrl, FileMode.Open, FileAccess.Read))
-        //    {
-        //        IFormFile file = fl.Write()
-        //}
 
         private DataTable getStudentDataTable(IList<StudentDTO> item)
         {
